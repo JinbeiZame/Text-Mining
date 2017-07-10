@@ -53,13 +53,20 @@ relation = output['sentences'][0]['openie']
 
 client = MongoClient()
 db = client.Textmining
+from nltk.stem.snowball import SnowballStemmer
+stemmer = SnowballStemmer("english")
 
 for rel in relation:
+	print(relation)
 	result = db.relation.insert_one(
 	    {
-	    	"subject" : rel['subject'],
-	    	"relation" : rel['relation'],
-	    	"object" : rel['object']
+	    	#"subject" : rel['subject'],
+			"subject": stemmer.stem(rel['subject']),
+	    	#"relation" : rel['relation'],
+			"relation": stemmer.stem(rel['relation']),
+	    	#"object" : rel['object']
+			"object": stemmer.stem(rel['object'])
+
 	    }
 	)
 
