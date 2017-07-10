@@ -1,7 +1,8 @@
 import codecs
 from pymongo import MongoClient
-from prettytable import PrettyTable
+#from prettytable import PrettyTable
 from pycorenlp import *
+#import textract
 
 #from pymongo import MongoClient
 import json
@@ -11,15 +12,20 @@ nlp = StanfordCoreNLP("http://localhost:9000/")
 #sentence = 'Although Mrs. Smit had a lot monry, She made poor use of it.'
 #sentence = 'Edwin told Kenny that Dr. Wilson suspected that he cheated on the chemistry exam.'
 #sentence = 'John had just set down the overstuffed sandwich when he spotted a cockroach on the table, He smashed it with his open palm before he could eat.'
-sentence = 'Sombut has travel on tokyo,We visited the Kiyomizu-dera temple,they go to home after the sunset.Although Mrs. Smit had a lot monry, She made poor use of it.John had just set down the overstuffed sandwich when he spotted a cockroach on the table, He smashed it with his open palm before he could eat.'
-#sentence =
-
+sentence = 'Sombut has travel on tokyo,We visited the Kiyomizu-dera temple,they go to home after the sunset,Although Mrs. Smit had a lot monry, She made poor use of it.John had just set down the overstuffed sandwich when he spotted a cockroach on the table, He smashed it with his open palm before he could eat.John had just set down the overstuffed sandwich when he spotted a cockroach on the table, He smashed it with his open palm before he could eat.'
 	#f = open('data_mining.txt', 'r')
 	#sentence = f.read()
 #sentencee = open('data_mining.txt', 'r', encoding='utf8')
 #sentence =sentencee.read()
 #f = codecs.open('data_mining.txt', 'r', 'UTF-8')
 #sentence = f.read()
+#sentence = ' '.join(t for t in sentence).encode("utf-8")
+
+
+#sentence = textract.process("simple1.pdf")
+#print(text)
+
+
 output = nlp.annotate(sentence,
 			properties={"annotators": "coref",
 					"outputFormat": "json", "openie.triple.strict": "true"})
@@ -36,6 +42,8 @@ for i in corefs:
 		else:
 			sent[j['startIndex']-1] = mention
 #print(sent)
+
+
 sent = ' '.join(t for t in sent).encode("utf-8")
 output = nlp.annotate(sent,
 			properties={"annotators": "openie",
@@ -55,6 +63,19 @@ for rel in relation:
 	    }
 	)
 
+#How to receieve value from php or python input browser ?? 
+client = MongoClient()
+db = client.Textmining
+
+#re1 = db.relation.remove( { "subject" : { "$ne": "Mrs. Smit" },{}} )           #use remove not good for this can u try  
+
+db.relation.find({"$and": [{"subject": "Mrs. Smit"}, {"object": "Mrs. Smit"}]}) #use find and "@and" it so well on time in this version
+#with open('result1.json', 'w') as fp:
+#    json.dump(re1, fp)
+
+#results = db.getCollection('relation').find({"subject" : "Sombut"})
+#print(results)
+#posts.insert(new_posts)
 #t = PrettyTable(['Word', 'part-of-speech'])
 
 #for w in output['sentences'][0]['tokens']:
@@ -63,6 +84,7 @@ for rel in relation:
 
 client = MongoClient()
 db = client.Textmining
+#db = client.results
 
 data = {
    "_comment":"Created with OWL2VOWL (version 0.3.1), http://vowl.visualdataweb.org",
