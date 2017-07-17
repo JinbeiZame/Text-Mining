@@ -8,7 +8,8 @@ from pycorenlp import *
 import json
 
 nlp = StanfordCoreNLP("http://localhost:9000/")
-sentence = 'Harry  has travel on tokyo, He visited the Kiyomizu-dera temple, He go to home after the sunset, He had been sitting in a chair,Sombut has travel on tokyo,We visited the Kiyomizu-dera temple.'
+sentence = 'Beam used his former employer as a reference when he applied for his new job.'
+#sentence = 'Harry  has travel on tokyo, He visited the Kiyomizu-dera temple, He go to home after the sunset, He had been sitting in a chair,Sombut has travel on tokyo,We visited the Kiyomizu-dera temple.'
 #sentence = 'harry has snoring loudly. He had been sitting in a chair,Sombut has travel on tokyo,We visited the Kiyomizu-dera temple,they go to home after the sunset'
 #sentence = 'Edwin told Kenny that Dr. Wilson suspected that he cheated on the chemistry exam.'
 #sentence = 'harry was snoring loudly. He had been sitting in a chair beside his bedroom window, and had finally fallen asleep with one side of his face pressed against the clod windowpane,his glasses askew and his mouth wide open.'
@@ -59,7 +60,7 @@ from nltk.stem.snowball import SnowballStemmer
 stemmer = SnowballStemmer("english")
 
 for rel in relation:
-	print(relation)
+	#print(relation)
 	result = db.relation.insert_one(
 	    {
 	    	"subject" : rel['subject'].lower(),
@@ -78,8 +79,9 @@ db = client.Textmining
 
 #re1 = db.relation.remove( { "subject" : { "$ne": "Mrs. Smit" },{}} )           #use remove not good for this can u try  
 
-#db.relation.find({"$and": [{"subject": "Mrs. Smit"}, {"object": "Mrs. Smit"}]}) #use find and "@and" it so well on time in this version
-db.relation.find({"$and": [{"subject": "Harry"}, {"object": "Harry"}]}) #use find and "@and" it so well on time in this version
+#result = db.relation.find({"$or": [{"subject": "Mrs. Smit"}, {"object": "Mrs. Smit"}]}) #use find and "@and" it so well on time in this version
+#print(result)
+#db.relation.find({"$and": [{"subject": "Josh"}, {"object": "Josh"}]}) #use find and "@and" it so well on time in this version
 #with open('result1.json', 'w') as fp:
 #    json.dump(re1, fp)
 
@@ -143,7 +145,7 @@ data = {
 
 class_r = {}
 count = 1
-for row in db.relation.find({}):
+for row in db.relation.find({"$or": [{"subject": "beam"}, {"object": "beam"}]}):    #precision to find the subject that interesting ex.. subject as beam and object as beam together
 	if row['subject'] not in class_r:
 		data['class'].append({ "id": row['subject'], "type": 'owl:Class'})
 		data['classAttribute'].append({
