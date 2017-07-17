@@ -8,11 +8,12 @@ from pycorenlp import *
 import json
 
 nlp = StanfordCoreNLP("http://localhost:9000/")
-#sentence = 'Sombut has travel on tokyo,We visited the Kiyomizu-dera temple,they go to home after the sunset'
-#sentence = 'Although Mrs. Smit had a lot monry, She made poor use of it.'
+sentence = 'Harry  has travel on tokyo, He visited the Kiyomizu-dera temple, He go to home after the sunset, He had been sitting in a chair,Sombut has travel on tokyo,We visited the Kiyomizu-dera temple.'
+#sentence = 'harry has snoring loudly. He had been sitting in a chair,Sombut has travel on tokyo,We visited the Kiyomizu-dera temple,they go to home after the sunset'
 #sentence = 'Edwin told Kenny that Dr. Wilson suspected that he cheated on the chemistry exam.'
+#sentence = 'harry was snoring loudly. He had been sitting in a chair beside his bedroom window, and had finally fallen asleep with one side of his face pressed against the clod windowpane,his glasses askew and his mouth wide open.'
 #sentence = 'John had just set down the overstuffed sandwich when he spotted a cockroach on the table, He smashed it with his open palm before he could eat.'
-sentence = 'Sombut has travel on tokyo,We visited the Kiyomizu-dera temple,they go to home after the sunset,Although Mrs. Smit had a lot monry, She made poor use of it.John had just set down the overstuffed sandwich when he spotted a cockroach on the table, He smashed it with his open palm before he could eat.John had just set down the overstuffed sandwich when he spotted a cockroach on the table, He smashed it with his open palm before he could eat.'
+#sentence = 'Sombut has travel on tokyo,We visited the Kiyomizu-dera temple,they go to home after the sunset,Although Mrs. Smit had a lot monry, She made poor use of it.John had just set down the overstuffed sandwich when he spotted a cockroach on the table, He smashed it with his open palm before he could eat.John had just set down the overstuffed sandwich when he spotted a cockroach on the table, He smashed it with his open palm before he could eat.'
 	#f = open('data_mining.txt', 'r')
 	#sentence = f.read()
 #sentencee = open('data_mining.txt', 'r', encoding='utf8')
@@ -33,6 +34,7 @@ output = nlp.annotate(sentence,
 corefs = output['corefs']
 tokens = output['sentences'][0]['tokens']
 #print(corefs)
+#print(tokens)
 sent = [t['word'] for t in tokens]
 for i in corefs:
 	mention = ''
@@ -60,12 +62,12 @@ for rel in relation:
 	print(relation)
 	result = db.relation.insert_one(
 	    {
-	    	#"subject" : rel['subject'],
-			"subject": stemmer.stem(rel['subject']),
-	    	#"relation" : rel['relation'],
-			"relation": stemmer.stem(rel['relation']),
-	    	#"object" : rel['object']
-			"object": stemmer.stem(rel['object'])
+	    	"subject" : rel['subject'].lower(),
+			#"subject": stemmer.stem(rel['subject']),
+	    	"relation" : rel['relation'].lower(),
+			#"relation": stemmer.stem(rel['relation']),
+	    	"object" : rel['object'].lower()
+			#"object": stemmer.stem(rel['object'])
 
 	    }
 	)
@@ -76,7 +78,8 @@ db = client.Textmining
 
 #re1 = db.relation.remove( { "subject" : { "$ne": "Mrs. Smit" },{}} )           #use remove not good for this can u try  
 
-db.relation.find({"$and": [{"subject": "Mrs. Smit"}, {"object": "Mrs. Smit"}]}) #use find and "@and" it so well on time in this version
+#db.relation.find({"$and": [{"subject": "Mrs. Smit"}, {"object": "Mrs. Smit"}]}) #use find and "@and" it so well on time in this version
+db.relation.find({"$and": [{"subject": "Harry"}, {"object": "Harry"}]}) #use find and "@and" it so well on time in this version
 #with open('result1.json', 'w') as fp:
 #    json.dump(re1, fp)
 
