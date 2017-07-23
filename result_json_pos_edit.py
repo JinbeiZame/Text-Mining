@@ -86,13 +86,21 @@ for i, j in enumerate(mylist[:-1]):
         #mylist[i] = m
         mylist[i+1] =m+1
     m+=1
-print mylist
+#print mylist
 import numbers
-print([x for x in mylist if isinstance(x, numbers.Number)])   #integer only
+print(type([x for x in mylist if isinstance(x, numbers.Number)]))   #integer only
+results = list(map(int, [x for x in mylist if isinstance(x, numbers.Number)]))
+print results[0]
+count = 0
 
 for rel in relation:
-    print(rel)
-    result = db.relation.insert_one(
+     print count
+     if count == results[0] or  count == results[1]:
+         print "Equal"
+         count+=1
+     elif(count != results):
+        print "no"
+        result = db.relation.insert_one(
 	    {
 	    	"subject" : rel['subject'].lower(),
 			#"subject": stemmer.stem(rel['subject']),
@@ -103,6 +111,25 @@ for rel in relation:
 
 	    }
 	)
+     count += 1
+
+
+
+'''
+for rel in relation:
+
+        result = db.relation.insert_one(
+	    {
+	    	"subject" : rel['subject'].lower(),
+			#"subject": stemmer.stem(rel['subject']),
+	    	"relation" : rel['relation'].lower(),
+			#"relation": stemmer.stem(rel['relation']),
+	    	"object" : rel['object'].lower()
+			#"object": stemmer.stem(rel['object'])
+
+	    }
+	)
+'''
 #sum += 1
 
 #How to receieve value from php or python input browser ?? 
@@ -181,7 +208,7 @@ data = {
 #{"$or": [{"subject": "kaiser"}]}
 class_r = {}
 count = 1
-for row in db.relation.find({"$or": [{"subject": "kaiser"}]}):    #precision to find the subject that interesting ex.. subject as beam and object as beam together
+for row in db.relation.find({"$or": [{"subject": "john"}]}):    #precision to find the subject that interesting ex.. subject as beam and object as beam together
 	if row['subject'] not in class_r:
 		data['class'].append({ "id": row['subject'], "type": 'owl:Class'})
 		data['classAttribute'].append({
