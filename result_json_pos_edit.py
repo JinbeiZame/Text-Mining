@@ -2,6 +2,7 @@
 
 import codecs
 import sys, locale, os
+
 from pymongo import MongoClient
 #from prettytable import PrettyTable
 from pycorenlp import *
@@ -13,11 +14,11 @@ import json
 nlp = StanfordCoreNLP("http://localhost:9000/")
 #sentence = 'Beam used his former employer as a reference when he applied for his new job.'
 #sentence = 'Kaiser has travel on Hogsmeade Village, He visited the Honeydukes, He go to Hogsmeade Village after the sunset, He had been sitting in a chair,Kaiser has travel on the Honeydukes,We visited Hogsmeade Village.'
-sentence = 'harry has snoring loudly, He had been sitting in a chair,Sombut has travel on tokyo,We visited the Kiyomizu-dera temple,they go to home after the sunset.'
+#sentence = 'harry has snoring loudly, He had been sitting in a chair,Sombut has travel on tokyo,We visited the Kiyomizu-dera temple,they go to home after the sunset.'
 #sentence = 'Edwin told Kenny that Dr. Wilson suspected that he cheated on the chemistry exam.'
 #sentence = "harry was snoring loudly. He had been sitting in a chair beside his bedroom window," +  \
 #			"and Ron had finally fallen asleep with one side of his face pressed against the clod windowpane."
-#sentence = 'John had just set down the overstuffed sandwich when he spotted a cockroach on the table, sam is running into the room he can not sleep.'
+sentence = 'John had just set down the overstuffed sandwich when he spotted a cockroach on the table, sam is running into the room he can not sleep.'
 #sentence = 'Sombut has travel on tokyo,We visited the Kiyomizu-dera temple,they go to home after the sunset,Although Mrs. Smit had a lot monry, She made poor use of it.John had just set down the overstuffed sandwich when he spotted a cockroach on the table, He smashed it with his open palm before he could eat.John had just set down the overstuffed sandwich when he spotted a cockroach on the table, He smashed it with his open palm before he could eat.'
 #print (type(sentence))
 
@@ -63,12 +64,32 @@ stemmer = SnowballStemmer("english")
 
 #for inning in relation:
 	#print(inning['subject'], inning['relation'], inning['object'])
+store0 = [t['relationSpan'] for t in relation]
+store = [t['relationSpan'][0] for t in relation]
+store1 = [t['relationSpan'][1] for t in relation]
+#print(len(store0))
+#print(store0)
+#print(store0)
+len_store = len(store0)
+#print(len_store)
 
-store = [t['relationSpan'] for t in relation]
-print(store)
+#for i in store0:
+print(store0)
+
+mylist = store0
+#mylist = [[14, 15], [14, 15], [14, 15], [26, 27], [26, 27], [15, 17],[26, 28], [14, 15], [14, 15], [26, 27], [26, 27], [15, 17]]
+m=0
+index=[]
+inde =0
+for i, j in enumerate(mylist[:-1]):
+    if j  == mylist[i+1]:
+        #mylist[i] = m
+        mylist[i+1] =m+1
+    m+=1
+print mylist
 
 for rel in relation:
-   # print(rel)
+    print(rel)
     result = db.relation.insert_one(
 	    {
 	    	"subject" : rel['subject'].lower(),
@@ -158,7 +179,7 @@ data = {
 #{"$or": [{"subject": "kaiser"}]}
 class_r = {}
 count = 1
-for row in db.relation.find({"$or": [{"subject": "sombut"}]}):    #precision to find the subject that interesting ex.. subject as beam and object as beam together
+for row in db.relation.find({"$or": [{"subject": "kaiser"}]}):    #precision to find the subject that interesting ex.. subject as beam and object as beam together
 	if row['subject'] not in class_r:
 		data['class'].append({ "id": row['subject'], "type": 'owl:Class'})
 		data['classAttribute'].append({
