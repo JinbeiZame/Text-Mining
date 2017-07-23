@@ -87,6 +87,8 @@ for i, j in enumerate(mylist[:-1]):
         mylist[i+1] =m+1
     m+=1
 print mylist
+import numbers
+print([x for x in mylist if isinstance(x, numbers.Number)])   #integer only
 
 for rel in relation:
     print(rel)
