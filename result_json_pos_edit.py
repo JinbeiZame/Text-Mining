@@ -1,4 +1,7 @@
+# -*- coding: utf-8 -*-
+
 import codecs
+import sys, locale, os
 from pymongo import MongoClient
 #from prettytable import PrettyTable
 from pycorenlp import *
@@ -8,38 +11,37 @@ from pycorenlp import *
 import json
 
 nlp = StanfordCoreNLP("http://localhost:9000/")
-sentence = 'Beam used his former employer as a reference when he applied for his new job.'
-#sentence = 'Harry  has travel on tokyo, He visited the Kiyomizu-dera temple, He go to home after the sunset, He had been sitting in a chair,Sombut has travel on tokyo,We visited the Kiyomizu-dera temple.'
-#sentence = 'harry has snoring loudly. He had been sitting in a chair,Sombut has travel on tokyo,We visited the Kiyomizu-dera temple,they go to home after the sunset'
+#sentence = 'Beam used his former employer as a reference when he applied for his new job.'
+#sentence = 'Kaiser has travel on Hogsmeade Village, He visited the Honeydukes, He go to Hogsmeade Village after the sunset, He had been sitting in a chair,Kaiser has travel on the Honeydukes,We visited Hogsmeade Village.'
+sentence = 'harry has snoring loudly, He had been sitting in a chair,Sombut has travel on tokyo,We visited the Kiyomizu-dera temple,they go to home after the sunset.'
 #sentence = 'Edwin told Kenny that Dr. Wilson suspected that he cheated on the chemistry exam.'
-#sentence = 'harry was snoring loudly. He had been sitting in a chair beside his bedroom window, and had finally fallen asleep with one side of his face pressed against the clod windowpane,his glasses askew and his mouth wide open.'
-#sentence = 'John had just set down the overstuffed sandwich when he spotted a cockroach on the table, He smashed it with his open palm before he could eat.'
+#sentence = "harry was snoring loudly. He had been sitting in a chair beside his bedroom window," +  \
+#			"and Ron had finally fallen asleep with one side of his face pressed against the clod windowpane."
+#sentence = 'John had just set down the overstuffed sandwich when he spotted a cockroach on the table, sam is running into the room he can not sleep.'
 #sentence = 'Sombut has travel on tokyo,We visited the Kiyomizu-dera temple,they go to home after the sunset,Although Mrs. Smit had a lot monry, She made poor use of it.John had just set down the overstuffed sandwich when he spotted a cockroach on the table, He smashed it with his open palm before he could eat.John had just set down the overstuffed sandwich when he spotted a cockroach on the table, He smashed it with his open palm before he could eat.'
-	#f = open('data_mining.txt', 'r')
-	#sentence = f.read()
-#sentencee = open('data_mining.txt', 'r', encoding='utf8')
-#sentence =sentencee.read()
-#f = codecs.open('data_mining.txt', 'r', 'UTF-8')
-#sentence = f.read()
-#sentence = ' '.join(t for t in sentence).encode("utf-8")
+#print (type(sentence))
 
 
 #sentence = textract.process("simple1.pdf")
 #print(text)
-
-
+#sentence = 'we have about three hundred registrations for student Sacraments and therefore your co operation in meeting these deadlines is imperative.'
+#sentence = sentence1.replace(u'\xa0', u' ')
+#sentence = sentence1.encode('ascii', 'ignore')
 output = nlp.annotate(sentence,
 			properties={"annotators": "coref",
 					"outputFormat": "json", "openie.triple.strict": "true"})
-
+#print(output)
 corefs = output['corefs']
 tokens = output['sentences'][0]['tokens']
 #print(corefs)
 #print(tokens)
 sent = [t['word'] for t in tokens]
+#print(sent)
 for i in corefs:
+	#print(corefs)
 	mention = ''
 	for j in corefs[i]:
+		#print(corefs[i])
 		if j['isRepresentativeMention'] == True:
 			mention = j['text']
 		else:
@@ -59,9 +61,15 @@ db = client.Textmining
 from nltk.stem.snowball import SnowballStemmer
 stemmer = SnowballStemmer("english")
 
+#for inning in relation:
+	#print(inning['subject'], inning['relation'], inning['object'])
+
+store = [t['relationSpan'] for t in relation]
+print(store)
+
 for rel in relation:
-	#print(relation)
-	result = db.relation.insert_one(
+   # print(rel)
+    result = db.relation.insert_one(
 	    {
 	    	"subject" : rel['subject'].lower(),
 			#"subject": stemmer.stem(rel['subject']),
@@ -72,6 +80,7 @@ for rel in relation:
 
 	    }
 	)
+#sum += 1
 
 #How to receieve value from php or python input browser ?? 
 client = MongoClient()
@@ -92,6 +101,10 @@ db = client.Textmining
 
 #for w in output['sentences'][0]['tokens']:
 #	print([w['word'], w['pos']])
+import cgi
+form = cgi.FieldStorage()
+searchterm =  form.getvalue('searchbox')
+
 
 
 client = MongoClient()
@@ -142,10 +155,10 @@ data = {
    "datatypeAttribute":[]
 }
 
-
+#{"$or": [{"subject": "kaiser"}]}
 class_r = {}
 count = 1
-for row in db.relation.find({"$or": [{"subject": "beam"}, {"object": "beam"}]}):    #precision to find the subject that interesting ex.. subject as beam and object as beam together
+for row in db.relation.find({"$or": [{"subject": "sombut"}]}):    #precision to find the subject that interesting ex.. subject as beam and object as beam together
 	if row['subject'] not in class_r:
 		data['class'].append({ "id": row['subject'], "type": 'owl:Class'})
 		data['classAttribute'].append({
@@ -190,6 +203,6 @@ for row in db.relation.find({"$or": [{"subject": "beam"}, {"object": "beam"}]}):
 							        })
 	count += 1
 with open('result.json', 'w') as fp:
-    json.dump(data, fp)
+	json.dump(data, fp)
 
 
