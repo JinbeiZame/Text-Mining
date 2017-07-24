@@ -14,7 +14,7 @@ import json
 nlp = StanfordCoreNLP("http://localhost:9000/")
 #sentence = 'Beam used his former employer as a reference when he applied for his new job.'
 #sentence = 'Kaiser has travel on Hogsmeade Village, He visited the Honeydukes, He go to Hogsmeade Village after the sunset, He had been sitting in a chair,Kaiser has travel on the Honeydukes,We visited Hogsmeade Village.'
-#sentence = 'harry has snoring loudly, He had been sitting in a chair,Sombut has travel on tokyo,We visited the Kiyomizu-dera temple,they go to home after the sunset.'
+#sentence = 'Sombut has snoring loudly,he had been sitting in a chair,Sombut has travel on tokyo,he visited the Kiyomizu-dera temple,they go to home after the sunset.'
 #sentence = 'Edwin told Kenny that Dr. Wilson suspected that he cheated on the chemistry exam.'
 #sentence = "harry was snoring loudly. He had been sitting in a chair beside his bedroom window," +  \
 #			"and Ron had finally fallen asleep with one side of his face pressed against the clod windowpane."
@@ -67,6 +67,7 @@ stemmer = SnowballStemmer("english")
 store0 = [t['relationSpan'] for t in relation]
 store = [t['relationSpan'][0] for t in relation]
 store1 = [t['relationSpan'][1] for t in relation]
+
 #print(len(store0))
 #print(store0)
 #print(store0)
@@ -74,10 +75,96 @@ len_store = len(store0)
 #print(len_store)
 
 #for i in store0:
-print(store0)
+#print(store0)
 
 mylist = store0
-#mylist = [[14, 15], [14, 15], [14, 15], [26, 27], [26, 27], [15, 17],[26, 28], [14, 15], [14, 15], [26, 27], [26, 27], [15, 17]]
+# -*- coding: utf-8 -*-
+from collections import Iterable
+
+#x = [[14, 15], [14, 15], [14, 15], [26, 27], [26, 27], [15, 17],[26, 28], [14, 15], [14, 15], [26, 27], [26, 27], [15, 17]]
+x = store0
+countt =1
+#print len(x)/2
+text_file = open("Output.txt", "w")
+for el in list(x):
+        #print ( " ".join([str(index) for index, value in enumerate(x) if value == el]))
+        text_file.write( " ".join([str(index) for index, value in enumerate(x) if value == el]))
+        text_file.write('\n')
+text_file.close()
+#print text_file
+text_file1 = open("Output1.txt", "w")
+for el in list(x):
+
+    text_file1.write(" ".join([str(index) for index, value in enumerate(x) if value == el]))
+    text_file1.write('\n')
+text_file1.close()
+
+with open('Output.txt', 'r') as file1:
+    with open('Output1.txt', 'r') as file2:
+        same = set(file1).intersection(file2)
+        #print same
+same.discard('\n')
+
+with open('some_output_file.txt', 'w') as file_out:
+    for line in same:
+        file_out.write(line)
+
+
+f = open("some_output_file.txt", "r")
+g = open("intersection.txt", "w")
+
+for line in f:
+
+    if line.strip():
+        g.write("\n".join(line.split()[1:]) + "\n")
+
+f.close()
+g.close()
+
+
+f = open("intersection.txt", "r")
+contents = f.readlines()
+#print contents
+f.close()
+
+contents.insert(0, "\n")                                 #Insert \n in first line text file
+
+f = open("intersection1.txt", "w")
+contents = "".join(contents)
+#print contents
+f.write(contents)
+f.close()
+
+
+with open('intersection.txt') as f:
+    h = [int(x) for x in next(f).split()]
+    array = [[int(x) for x in line.split()] for line in f]
+    #print array
+
+list2 = [x for x in array if x]
+#print(list2)
+
+
+
+def flatten(list2):
+    for item in list2:
+        if isinstance(item, Iterable) and not isinstance(item, basestring):
+            for x in flatten(item):
+                yield x                                                             #Convert nest list to list of integer
+        else:
+            yield item
+
+#print(list(flatten(list2)))
+import numbers
+CNLTLOI = list(flatten(list2))
+
+results_integer = list(map(int, [x for x in CNLTLOI if isinstance(x, numbers.Number)]))
+#print results_integer
+
+sort_list = sorted(results_integer, reverse=False)
+print(sort_list)    #array had a duplicated
+
+'''#mylist = [[14, 15], [14, 15], [14, 15], [26, 27], [26, 27], [15, 17],[26, 28], [14, 15], [14, 15], [26, 27], [26, 27], [15, 17]]
 m=0
 index=[]
 inde =0
@@ -87,35 +174,46 @@ for i, j in enumerate(mylist[:-1]):
         mylist[i+1] =m+1
     m+=1
 #print mylist
+'''
 import numbers
-print(type([x for x in mylist if isinstance(x, numbers.Number)]))   #integer only
-results = list(map(int, [x for x in mylist if isinstance(x, numbers.Number)]))
-print results[0]
+#print(type([x for x in mylist if isinstance(x, numbers.Number)]))   #integer only
+#results = list(map(int, [x for x in mylist if isinstance(x, numbers.Number)]))
+#print type(results)
+#print results
 count = 0
 
-for rel in relation:
-     print count
-     if count == results[0] or  count == results[1]:
-         print "Equal"
-         count+=1
-     elif(count != results):
-        print "no"
-        result = db.relation.insert_one(
-	    {
-	    	"subject" : rel['subject'].lower(),
-			#"subject": stemmer.stem(rel['subject']),
-	    	"relation" : rel['relation'].lower(),
-			#"relation": stemmer.stem(rel['relation']),
-	    	"object" : rel['object'].lower()
-			#"object": stemmer.stem(rel['object'])
+#for idx, val in enumerate(sort_list):
+#    print(idx, val)
+indd =0
+for indd, val in enumerate(sort_list):
 
-	    }
-	)
-     count += 1
+	indd+=1
+print indd
+
+for i, rel in enumerate(relation):
+	for ind, val in enumerate(sort_list):
+				if i == val:
+					print(i,val)
+
+					result = db.relation.insert_one(
+	   			 	{
+	    			"subject" : rel['subject'].lower(),
+					#"subject": stemmer.stem(rel['subject']),
+	    			"relation" : rel['relation'].lower(),
+					#"relation": stemmer.stem(rel['relation']),
+	    			"object" : rel['object'].lower()
+					#"object": stemmer.stem(rel['object'])
+
+	    			}
+					)
+				else:
+					print("")
 
 
 
 '''
+
+
 for rel in relation:
 
         result = db.relation.insert_one(
