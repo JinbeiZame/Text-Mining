@@ -192,9 +192,9 @@ print indd
 
 for i, rel in enumerate(relation):
 	for ind, val in enumerate(sort_list):
-				if i == val:
+				if i != val:
 					print(i,val)
-					print(i, val)
+
 					result = db.relation.insert_one(
 	   			 	{
 	    			"subject" : rel['subject'].lower(),
