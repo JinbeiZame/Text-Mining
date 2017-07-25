@@ -2,7 +2,7 @@
 
 import codecs
 import sys, locale, os
-
+import re
 from pymongo import MongoClient
 #from prettytable import PrettyTable
 from pycorenlp import *
@@ -32,11 +32,14 @@ nlp = StanfordCoreNLP("http://localhost:9000/")
 
 #sentence = 'Beam love my mom. She took care of me when I was very young. '
 
-with open('simple.txt', 'r') as myfile:
-    sentence=myfile.read().replace('\n', '')
 
+
+with open('simple01.txt', 'r') as myfile:
+    sentence=myfile.read().replace('\n', '').replace('\n', '/').replace('\n', '—').replace('\n', '’')
 print type(sentence)
+sentence = sentence.replace(',', '')
 print sentence
+
 output = nlp.annotate(sentence,
 			properties={"annotators": "coref",
 					"outputFormat": "json", "openie.triple.strict": "true"})
@@ -46,18 +49,31 @@ tokens = output['sentences'][0]['tokens']
 #print(corefs)
 #print(tokens)
 sent = [t['word'] for t in tokens]
-#print(sent)
-for i in corefs:
+
+print type(sent)
+for  i in corefs:
 	#print(corefs)
 	mention = ''
-	for j in corefs[i]:
-		#print(corefs[i])
-		if j['isRepresentativeMention'] == True:
-			mention = j['text']
-		else:
-			sent[j['startIndex']-1] = mention
+	for  j in corefs[i]:
+         print j['isRepresentativeMention']
+         print mention
+        if j['isRepresentativeMention'] == True:
+            mention = j['text']
+            print  j['text']
+        else:
+            sent[j['startIndex']-1] = mention
+            print j['text']
 print(sent)
-
+'''
+for i in corefs:
+    mention = ''
+    for j in corefs[i]:
+        if j['isRepresentativeMention'] == True:
+            mention = j['text']
+        else:
+            (sent[j['startIndex']-1]).append(mention)
+print sent
+'''
 #sentence.close()
 
 sent = ' '.join(t for t in sent).encode("utf-8")
@@ -395,7 +411,7 @@ data = {
 #{"$or": [{"subject": "kaiser"}]}
 class_r = {}
 count = 1
-for row in db.relation.find({"$or": [{"subject": "my mom"}]}):    #precision to find the subject that interesting ex.. subject as beam and object as beam together
+for row in db.relation.find({"$or": [{"subject": "he"}]}):    #precision to find the subject that interesting ex.. subject as beam and object as beam together
 	if row['subject'] not in class_r:
 		data['class'].append({ "id": row['subject'], "type": 'owl:Class'})
 		data['classAttribute'].append({
