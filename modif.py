@@ -19,7 +19,8 @@ nlp = StanfordCoreNLP("http://localhost:9000/")
 #sentence = "harry was snoring loudly. He had been sitting in a chair beside his bedroom window," +  \
 #			"and Ron had finally fallen asleep with one side of his face pressed against the clod windowpane."
 #sentence = 'John had just set down the overstuffed sandwich when he spotted a cockroach on the table, sam is running into the room he can not sleep.'
-sentence = 'John has travel on tokyo, he visited the Kiyomizu-dera temple,he go to home after the sunset, he had a lot monry, She made poor use of it.John had just set down the overstuffed sandwich when he spotted a cockroach on the table, He smashed it with his open palm before he could eat.John had just set down the overstuffed sandwich when he spotted a cockroach on the table, He smashed it with his open palm before he could eat.'
+#sentence = 'John has travel on tokyo, he visited the Kiyomizu-dera temple,he go to home after the sunset, he had a lot monry, She made poor use of it.John had just set down the overstuffed sandwich when he spotted a cockroach on the table, He smashed it with his open palm before he could eat.John had just set down the overstuffed sandwich when he spotted a cockroach on the table, He smashed it with his open palm before he could eat.'
+#sentence =' I love my mom. She took care of me when I was very young. She took care of me when I was sick. She taught me how to read. She taught me how to get dressed. She taught me how to button my shirt. She taught me how to tie my shoes. She taught me how to brush my teeth. She taught me to be kind to others. She taught me to tell the truth. She taught me to be polite. She took me to school on my first day of school. She held my hand. She helped me with my homework. She was nice to all my friends. She always cheered me up. Next year I will graduate from high school. I will go to college. I will do well in college. I will do well after college. My mom has taught me well.'
 #print (type(sentence))
 
 
@@ -28,6 +29,14 @@ sentence = 'John has travel on tokyo, he visited the Kiyomizu-dera temple,he go 
 #sentence = 'we have about three hundred registrations for student Sacraments and therefore your co operation in meeting these deadlines is imperative.'
 #sentence = sentence1.replace(u'\xa0', u' ')
 #sentence = sentence1.encode('ascii', 'ignore')
+
+#sentence = 'Beam love my mom. She took care of me when I was very young. '
+
+with open('simple.txt', 'r') as myfile:
+    sentence=myfile.read().replace('\n', '')
+
+print type(sentence)
+print sentence
 output = nlp.annotate(sentence,
 			properties={"annotators": "coref",
 					"outputFormat": "json", "openie.triple.strict": "true"})
@@ -47,8 +56,9 @@ for i in corefs:
 			mention = j['text']
 		else:
 			sent[j['startIndex']-1] = mention
-#print(sent)
+print(sent)
 
+#sentence.close()
 
 sent = ' '.join(t for t in sent).encode("utf-8")
 output = nlp.annotate(sent,
@@ -129,14 +139,14 @@ g.close()
 
 f = open("intersection.txt", "r")
 contents = f.readlines()
-print contents
+#print contents
 f.close()
 
 contents.insert(0, "\n")                                 #Insert \n in first line text file
 
 f = open("intersection1.txt", "w")
 contents = "".join(contents)
-print contents
+#print contents
 f.write(contents)
 f.close()
 
@@ -144,10 +154,10 @@ f.close()
 with open('intersection.txt') as f:
     h = [int(x) for x in next(f).split()]
     array = [[int(x) for x in line.split()] for line in f]
-    print array
+    #print array
 
 list2 = [x for x in array if x]
-print(list2)
+#print(list2)
 
 
 
@@ -162,12 +172,12 @@ def flatten(list2):
 #print(list(flatten(list2)))
 import numbers
 CNLTLOI = list(flatten(list2))
-print CNLTLOI
+#print CNLTLOI
 results_integer = list(map(int, [x for x in CNLTLOI if isinstance(x, numbers.Number)]))
-print results_integer
+#print results_integer
 
 sort_list = sorted(results_integer, reverse=False)
-print(sort_list)    #array had a duplicated
+#print(sort_list)    #array had a duplicated
 
 '''#mylist = [[14, 15], [14, 15], [14, 15], [26, 27], [26, 27], [15, 17],[26, 28], [14, 15], [14, 15], [26, 27], [26, 27], [15, 17]]
 m=0
@@ -223,7 +233,7 @@ for i in enumerate(sort_list):
      aa.append(a.pop())
 #print  type(aa)
 store01 =store0
-print store01
+#print store01
 for ii,i in enumerate(sort_list):
     for y , x in enumerate(store01):
         if y == aa[ii]:
@@ -237,12 +247,12 @@ for i in enumerate(sort_list):
      aa1.append(aa.pop())
 #print  type(aa1)
 store001 =store01
-print store001
+#print store001
 for ii,i in enumerate(sort_list):
     for y , x in enumerate(store001):   # round 2
         if y == aa1[ii]:
             del store001[aa1[ii]]
-print store001
+#print store001
 
 
 '''
@@ -259,7 +269,7 @@ for b, sec in enumerate(store001):
 hr = count
 #for ii, i in enumerate(store001):
 for rel in enumerate(relation):
-    print rel
+    #print rel
 
 
     for j, rel in enumerate(relation):
@@ -268,9 +278,9 @@ for rel in enumerate(relation):
             if count > 0:
                         if rel['relationSpan'] != ( ii for i in range(len(store001))):
                             if store001[b] == rel['relationSpan']:
-                                print store001[b]
-                                print rel['relationSpan']
-                                print ('\n')
+                                #print store001[b]
+                                #print rel['relationSpan']
+                                #print ('\n')
                                 result = db.relation.insert_one(
                                     {
                                         "subject": rel['subject'].lower(),
@@ -385,7 +395,7 @@ data = {
 #{"$or": [{"subject": "kaiser"}]}
 class_r = {}
 count = 1
-for row in db.relation.find({"$or": [{"subject": "john"}]}):    #precision to find the subject that interesting ex.. subject as beam and object as beam together
+for row in db.relation.find({"$or": [{"subject": "my mom"}]}):    #precision to find the subject that interesting ex.. subject as beam and object as beam together
 	if row['subject'] not in class_r:
 		data['class'].append({ "id": row['subject'], "type": 'owl:Class'})
 		data['classAttribute'].append({
