@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+# -*- coding: utf-8 -*-
 import codecs
 import sys, locale, os
 import re
@@ -16,8 +16,7 @@ nlp = StanfordCoreNLP("http://localhost:9000/")
 #sentence = 'Kaiser has travel on Hogsmeade Village, He visited the Honeydukes, He go to Hogsmeade Village after the sunset, He had been sitting in a chair,Kaiser has travel on the Honeydukes,We visited Hogsmeade Village.'
 #sentence = 'John has snoring loudly,he had been sitting in a chair,Sombut has travel on tokyo,he visited the Kiyomizu-dera temple,they go to home after the sunset.'
 #sentence = 'Edwin told Kenny that Dr. Wilson suspected that he cheated on the chemistry exam.'
-#sentence = "harry was snoring loudly. He had been sitting in a chair beside his bedroom window," +  \
-#			"and Ron had finally fallen asleep with one side of his face pressed against the clod windowpane."
+sentence = "Harry was snoring loudly,He had been[ sitting in a-chair beside his bedroom window and Ron had finally fallen asleep with one side of his face pressed against the clod windowpane."
 #sentence = 'John had just set down the overstuffed sandwich when he spotted a cockroach on the table, sam is running into the room he can not sleep.'
 #sentence = 'John has travel on tokyo, he visited the Kiyomizu-dera temple,he go to home after the sunset, he had a lot monry, She made poor use of it.John had just set down the overstuffed sandwich when he spotted a cockroach on the table, He smashed it with his open palm before he could eat.John had just set down the overstuffed sandwich when he spotted a cockroach on the table, He smashed it with his open palm before he could eat.'
 #sentence =' I love my mom. She took care of me when I was very young. She took care of me when I was sick. She taught me how to read. She taught me how to get dressed. She taught me how to button my shirt. She taught me how to tie my shoes. She taught me how to brush my teeth. She taught me to be kind to others. She taught me to tell the truth. She taught me to be polite. She took me to school on my first day of school. She held my hand. She helped me with my homework. She was nice to all my friends. She always cheered me up. Next year I will graduate from high school. I will go to college. I will do well in college. I will do well after college. My mom has taught me well.'
@@ -27,14 +26,15 @@ nlp = StanfordCoreNLP("http://localhost:9000/")
 #sentence = sentence1.replace(u'\xa0', u' ')
 #sentence = sentence1.encode('ascii', 'ignore')
 
-#sentence = 'Beam love my mom. She took care of me when I was very young. '
-
+#sentence = """I love my mom. She took care of me when I was very young. She took care of me when I was sick. She taught me how to read. She taught me how to get dressed. She taught me how to button my shirt. She taught me how to tie my shoes. She taught me how to brush my teeth. She taught me to be kind to others. She taught me to tell the truth. She taught me to be polite. She took me to school on my first day of school. She held my hand. She helped me with my homework. She was nice to all my friends. She always cheered me up. Next year I will graduate from high school. I will go to college. I will do well in college. I will do well after college. My mom has taught me well.'
+#"""
 
 text_file = open("file_extract.txt", "w")
 text_file.write(textract.process("simple1.pdf"))
 text_file.close()   #close file
 print text_file
 
+'''
 with open(r'file_extract.txt', 'r') as infile,open(r'file_extract1.txt', 'w') as outfile:
     data = infile.read()
     data = data.replace("-", " ")
@@ -46,15 +46,25 @@ with open(r'file_extract.txt', 'r') as infile,open(r'file_extract1.txt', 'w') as
     data = data.replace('“', ' ')
     data = data.replace('”', ' ')
     data = data.replace('~', ' ')
+    data = data.replace('(', ' ')
+    data = data.replace(')', ' ')
+    data = data.replace("?", ' ')
+    data = data.replace('', ' ')
+    data = data.replace("”", ' ')
     outfile.write(data)
 
+'''
 
+
+import string
+printable = set(string.printable)
+sentence = filter(lambda x: x in printable, sentence)            #delete ascii in text
+
+'''
 with open('file_extract1.txt', 'r') as myfile:
     sentence=myfile.read().replace('\n', '').replace('\n', '/').replace('\n', '—').replace('\n', '’')
-#print type(sentence)
 sentence = sentence.replace(',', '')
-#print sentence
-
+'''
 output = nlp.annotate(sentence,
 			properties={"annotators": "coref",
 					"outputFormat": "json", "openie.triple.strict": "true"})
@@ -426,7 +436,7 @@ data = {
 #{"$or": [{"subject": "kaiser"}]}
 class_r = {}
 count = 1
-for row in db.relation.find({"$or": [{"subject": "he"}]}):    #precision to find the subject that interesting ex.. subject as beam and object as beam together
+for row in db.relation.find({"$or": [{"subject": "ron"}]}):    #precision to find the subject that interesting ex.. subject as beam and object as beam together
 	if row['subject'] not in class_r:
 		data['class'].append({ "id": row['subject'], "type": 'owl:Class'})
 		data['classAttribute'].append({
