@@ -2,32 +2,59 @@
 
 import codecs
 import sys, locale, os
-
+import re
 from pymongo import MongoClient
 #from prettytable import PrettyTable
 from pycorenlp import *
 #import textract
-
+import textract
 #from pymongo import MongoClient
 import json
 
 nlp = StanfordCoreNLP("http://localhost:9000/")
 #sentence = 'Beam used his former employer as a reference when he applied for his new job.'
 #sentence = 'Kaiser has travel on Hogsmeade Village, He visited the Honeydukes, He go to Hogsmeade Village after the sunset, He had been sitting in a chair,Kaiser has travel on the Honeydukes,We visited Hogsmeade Village.'
-#sentence = 'Sombut has snoring loudly,he had been sitting in a chair,Sombut has travel on tokyo,he visited the Kiyomizu-dera temple,they go to home after the sunset.'
+#sentence = 'John has snoring loudly,he had been sitting in a chair,Sombut has travel on tokyo,he visited the Kiyomizu-dera temple,they go to home after the sunset.'
 #sentence = 'Edwin told Kenny that Dr. Wilson suspected that he cheated on the chemistry exam.'
 #sentence = "harry was snoring loudly. He had been sitting in a chair beside his bedroom window," +  \
 #			"and Ron had finally fallen asleep with one side of his face pressed against the clod windowpane."
-sentence = 'John had just set down the overstuffed sandwich when he spotted a cockroach on the table, sam is running into the room he can not sleep.'
-#sentence = 'Sombut has travel on tokyo,We visited the Kiyomizu-dera temple,they go to home after the sunset,Although Mrs. Smit had a lot monry, She made poor use of it.John had just set down the overstuffed sandwich when he spotted a cockroach on the table, He smashed it with his open palm before he could eat.John had just set down the overstuffed sandwich when he spotted a cockroach on the table, He smashed it with his open palm before he could eat.'
+#sentence = 'John had just set down the overstuffed sandwich when he spotted a cockroach on the table, sam is running into the room he can not sleep.'
+#sentence = 'John has travel on tokyo, he visited the Kiyomizu-dera temple,he go to home after the sunset, he had a lot monry, She made poor use of it.John had just set down the overstuffed sandwich when he spotted a cockroach on the table, He smashed it with his open palm before he could eat.John had just set down the overstuffed sandwich when he spotted a cockroach on the table, He smashed it with his open palm before he could eat.'
+#sentence =' I love my mom. She took care of me when I was very young. She took care of me when I was sick. She taught me how to read. She taught me how to get dressed. She taught me how to button my shirt. She taught me how to tie my shoes. She taught me how to brush my teeth. She taught me to be kind to others. She taught me to tell the truth. She taught me to be polite. She took me to school on my first day of school. She held my hand. She helped me with my homework. She was nice to all my friends. She always cheered me up. Next year I will graduate from high school. I will go to college. I will do well in college. I will do well after college. My mom has taught me well.'
 #print (type(sentence))
 
-
-#sentence = textract.process("simple1.pdf")
-#print(text)
 #sentence = 'we have about three hundred registrations for student Sacraments and therefore your co operation in meeting these deadlines is imperative.'
 #sentence = sentence1.replace(u'\xa0', u' ')
 #sentence = sentence1.encode('ascii', 'ignore')
+
+#sentence = 'Beam love my mom. She took care of me when I was very young. '
+
+
+text_file = open("file_extract.txt", "w")
+text_file.write(textract.process("simple1.pdf"))
+text_file.close()   #close file
+print text_file
+
+with open(r'file_extract.txt', 'r') as infile,open(r'file_extract1.txt', 'w') as outfile:
+    data = infile.read()
+    data = data.replace("-", " ")
+    data = data.replace("’", " ")
+    data = data.replace('\n',' ')
+    data = data.replace("/", " ")
+    data = data.replace('[', ' ')
+    data = data.replace(']', ' ')
+    data = data.replace('“', ' ')
+    data = data.replace('”', ' ')
+    data = data.replace('~', ' ')
+    outfile.write(data)
+
+
+with open('file_extract1.txt', 'r') as myfile:
+    sentence=myfile.read().replace('\n', '').replace('\n', '/').replace('\n', '—').replace('\n', '’')
+#print type(sentence)
+sentence = sentence.replace(',', '')
+#print sentence
+
 output = nlp.annotate(sentence,
 			properties={"annotators": "coref",
 					"outputFormat": "json", "openie.triple.strict": "true"})
@@ -37,18 +64,32 @@ tokens = output['sentences'][0]['tokens']
 #print(corefs)
 #print(tokens)
 sent = [t['word'] for t in tokens]
-#print(sent)
-for i in corefs:
+
+print type(sent)
+for  i in corefs:
 	#print(corefs)
 	mention = ''
-	for j in corefs[i]:
-		#print(corefs[i])
-		if j['isRepresentativeMention'] == True:
-			mention = j['text']
-		else:
-			sent[j['startIndex']-1] = mention
-#print(sent)
-
+	for  j in corefs[i]:
+         print j['isRepresentativeMention']
+         print mention
+        if j['isRepresentativeMention'] == True:
+            mention = j['text']
+            print  j['text']
+        else:
+            sent[j['startIndex']-1] = mention
+            print j['text']
+print(sent)
+'''
+for i in corefs:
+    mention = ''
+    for j in corefs[i]:
+        if j['isRepresentativeMention'] == True:
+            mention = j['text']
+        else:
+            (sent[j['startIndex']-1]).append(mention)
+print sent
+'''
+#sentence.close()
 
 sent = ' '.join(t for t in sent).encode("utf-8")
 output = nlp.annotate(sent,
@@ -84,7 +125,12 @@ from collections import Iterable
 #x = [[14, 15], [14, 15], [14, 15], [26, 27], [26, 27], [15, 17],[26, 28], [14, 15], [14, 15], [26, 27], [26, 27], [15, 17]]
 x = store0
 countt =1
-#print len(x)/2
+#print x
+
+'''
+for d, fel  in enumerate(sort_list):
+    xx = [ [ j for j in store0[i] if i != fel ] for i in range(len(store0)) ]    #delete duplicate index
+print xx '''
 text_file = open("Output.txt", "w")
 for el in list(x):
         #print ( " ".join([str(index) for index, value in enumerate(x) if value == el]))
@@ -102,7 +148,7 @@ text_file1.close()
 with open('Output.txt', 'r') as file1:
     with open('Output1.txt', 'r') as file2:
         same = set(file1).intersection(file2)
-        #print same
+        print same
 same.discard('\n')
 
 with open('some_output_file.txt', 'w') as file_out:
@@ -112,7 +158,7 @@ with open('some_output_file.txt', 'w') as file_out:
 
 f = open("some_output_file.txt", "r")
 g = open("intersection.txt", "w")
-
+#print  g
 for line in f:
 
     if line.strip():
@@ -157,12 +203,12 @@ def flatten(list2):
 #print(list(flatten(list2)))
 import numbers
 CNLTLOI = list(flatten(list2))
-
+#print CNLTLOI
 results_integer = list(map(int, [x for x in CNLTLOI if isinstance(x, numbers.Number)]))
 #print results_integer
 
 sort_list = sorted(results_integer, reverse=False)
-print(sort_list)    #array had a duplicated
+#print(sort_list)    #array had a duplicated
 
 '''#mylist = [[14, 15], [14, 15], [14, 15], [26, 27], [26, 27], [15, 17],[26, 28], [14, 15], [14, 15], [26, 27], [26, 27], [15, 17]]
 m=0
@@ -185,32 +231,103 @@ count = 0
 #for idx, val in enumerate(sort_list):
 #    print(idx, val)
 indd =0
+a = []
 for indd, val in enumerate(sort_list):
+    a.append(val)
+    #print val
+	#indd+=1
+#print type(a)
+#print a
+#print indd
+'''
+aa = []
+for i in enumerate(sort_list):
+     aa.append(a.pop(-1))
+#print  type(aa)
 
-	indd+=1
-print indd
+for ii,i in enumerate(aa):
+   print aa[ii]
+
+del aa[1]
+
+print aa
+'''
+'''
+for d, fel  in enumerate(sort_list):
+            xx = [ [ j for j in store0[i] if j != aa ] for i in range(len(store0)) ]    #delete duplicate index
+            print (" ")
+
+print xx'''
+aa = []
+save = []
+for i in enumerate(sort_list):
+     aa.append(a.pop())
+#print  type(aa)
+store01 =store0
+#print store01
+for ii,i in enumerate(sort_list):
+    for y , x in enumerate(store01):
+        if y == aa[ii]:
+            del store01[aa[ii]]
+#print store01
 
 
+aa1 = []
+save1 = []
+for i in enumerate(sort_list):
+     aa1.append(aa.pop())
+#print  type(aa1)
+store001 =store01
+#print store001
+for ii,i in enumerate(sort_list):
+    for y , x in enumerate(store001):   # round 2
+        if y == aa1[ii]:
+            del store001[aa1[ii]]
+#print store001
 
 
-for i, rel in enumerate(relation):
-	#for ind, val in enumerate(sort_list):
-	#print(rel)
-	print(i)
-	result = db.relation.insert_one(
-	   			{
-	    		"subject" : rel['subject'].lower(),
-					#"subject": stemmer.stem(rel['subject']),
-	    		"relation" : rel['relation'].lower(),
-					#"relation": stemmer.stem(rel['relation']),
-	    			"object" : rel['object'].lower()
-					#"object": stemmer.stem(rel['object'])
+'''
+for d, fel  in enumerate(sort_list):
 
-	    			}
-					)
-else:
 
-		print("")
+    print ([ [ for j in store0[i] if i != fel ] for i in range(len(store0)) ] )   #delete duplicate index
+    print fel
+
+'''
+count = 0
+for b, sec in enumerate(store001):
+          count+=1
+hr = count
+#for ii, i in enumerate(store001):
+for rel in enumerate(relation):
+    #print rel
+
+
+    for j, rel in enumerate(relation):
+
+        for b, sec in enumerate(store001):
+            if count > 0:
+                        if rel['relationSpan'] != ( ii for i in range(len(store001))):
+                            if store001[b] == rel['relationSpan']:
+                                #print store001[b]
+                                #print rel['relationSpan']
+                                #print ('\n')
+                                result = db.relation.insert_one(
+                                    {
+                                        "subject": rel['subject'].lower(),
+                                        # "subject": stemmer.stem(rel['subject']),
+                                        "relation": rel['relation'].lower(),
+                                        # "relation": stemmer.stem(rel['relation']),
+                                        "object": rel['object'].lower()
+                                        # "object": stemmer.stem(rel['object'])
+
+                                    }
+                                )
+                                count -= 1
+                        else:
+                            print ("Equal")
+
+
 
 
 
@@ -233,11 +350,11 @@ for rel in relation:
 '''
 #sum += 1
 
-#How to receieve value from php or python input browser ?? 
+#How to receieve value from php or python input browser ??
 client = MongoClient()
 db = client.Textmining
 
-#re1 = db.relation.remove( { "subject" : { "$ne": "Mrs. Smit" },{}} )           #use remove not good for this can u try  
+#re1 = db.relation.remove( { "subject" : { "$ne": "Mrs. Smit" },{}} )           #use remove not good for this can u try
 
 #result = db.relation.find({"$or": [{"subject": "Mrs. Smit"}, {"object": "Mrs. Smit"}]}) #use find and "@and" it so well on time in this version
 #print(result)
@@ -309,7 +426,7 @@ data = {
 #{"$or": [{"subject": "kaiser"}]}
 class_r = {}
 count = 1
-for row in db.relation.find({"$or": [{"subject": "john"}]}):    #precision to find the subject that interesting ex.. subject as beam and object as beam together
+for row in db.relation.find({"$or": [{"subject": "he"}]}):    #precision to find the subject that interesting ex.. subject as beam and object as beam together
 	if row['subject'] not in class_r:
 		data['class'].append({ "id": row['subject'], "type": 'owl:Class'})
 		data['classAttribute'].append({
@@ -340,7 +457,7 @@ for row in db.relation.find({"$or": [{"subject": "john"}]}):    #precision to fi
 		class_r[row['object']] = True
 	id_property = 'property'+str(count)
 	data['property'].append({"id":id_property , "type":"owl:objectProperty"})
-	data['propertyAttribute'].append({	"id": id_property, 
+	data['propertyAttribute'].append({	"id": id_property,
 									  	"domain": row['subject'],
 									  	"range": row['object'],
 									  	"label":{
@@ -355,5 +472,4 @@ for row in db.relation.find({"$or": [{"subject": "john"}]}):    #precision to fi
 	count += 1
 with open('result.json', 'w') as fp:
 	json.dump(data, fp)
-
 
