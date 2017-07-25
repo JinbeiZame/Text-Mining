@@ -1,0 +1,213 @@
+A Translation Approach to
+Portable Ontology Specifications
+
+Thomas R. Gruber
+
+Knowledge System Laboratory
+Stanford University
+701 Welch Road, Building C
+Palo Alto, CA 94304
+gruber@ksl.stanford.edu
+
+Abstract
+
+To support the sharing and reuse of formally represented knowledge among Al systems, it is
+useful to define the common vocabulary in which shared knowledge is represented.
+
+A
+specification of a representational vocabulary for a shared domain of discourse — definitions of
+classes, relations, functions, and other objects — is called an ontology.
+
+This paper describes a
+mechanism for defining ontologies that are portable over representation systems.
+
+Definitions
+written in a standard format for predicate calculus are translated by a system called Ontolingua
+into specialized representations, including framebased systems as well as relational languages.
+
+This allows researchers to share and reuse ontologies, while retaining the computational benefits
+of specialized implementations.
+
+We discuss how the translation approach to portability addresses several technical problems.
+
+One problem is how to accommodate the stylistic and organizational differences among
+representations while preserving declarative content.
+
+Another is how to translate from a very
+expressive language into restricted languages, remaining systemindependent while preserving
+the computational efficiency of implemented systems.
+
+We describe how these problems are
+addressed by basing Ontolingua itself on an ontology of domainindependent, representational
+idioms.
+
+1.
+
+Introduction
+
+A body of formally represented knowledge is based on a conceptualization: the objects,
+concepts, and other entities that are presumed to exist in some area of interest and the
+relationships that hold them (Genesereth & Nilsson, 1987).
+
+A conceptualization is an
+abstract, simplified View of the world that we wish to represent for some purpose.
+
+Every knowledge base, knowledgebased system, or knowledgelevel agent is
+committed to some conceptualization, explicitly or implicitly.
+
+An ontology is an explicit specification of a conceptualization.
+
+The term is borrowed
+from philosophy, where an ontology is a systematic account of Existence.
+
+For
+knowledgebased systems, what ”exists” is exactly that which can be represented.
+
+When the knowledge of a domain is represented in a declarative formalism, the set of
+objects that can be represented is called the universe of discourse.
+
+This set of objects,
+and the describable relationships among them, are reflected in the representational
+vocabulary with which a knowledgebased program represents knowledge.
+
+Thus, we
+can describe the ontology of a program by defining a set of representational terms.
+
+In
+such an ontology, definitions associate the names of entities in the universe of discourse
+(e. g., classes, relations, functions, or other objects) with humanreadable text describing
+what the names are meant to denote, and formal axioms that constrain the
+interpretation and wellformed use of these terms.
+
+This paper addresses the problem of portability for ontologies.
+
+Portability is a
+problem because the parties to a common ontology may use different representation
+languages and systems.
+
+Ideally, shared terms should be defined at the knowledge level,
+independent of specific representation languages.
+
+Of course, definitions need to be
+couched in some common formalism if they are to be shareable by knowledgebased
+applications.
+
+However, it is not realistic or desirable to require that those applications
+be implemented in a common representation language or system.
+
+This is because
+different applications require different kinds of reasoning services, and specialpurpose
+languages to support them.
+
+Thus, the portability problem for ontologies is to support
+common ontologies over multiple representation systems.
+
+We describe a translation approach to the portability problem for ontologies.
+
+In a
+translation approach, ontologies are specified in a standard, systemindependent form
+and translated into specific representation languages.
+
+In Section 3 we will describe
+Ontolingua, an implemented system for translating ontologies from a declarative,
+predicatecalculus language into a variety of representation systems.
+
+In Section 4 we
+discuss the strengths and limitations of the approach.
+
+But first, we define the notion of
+a shared ontology and describe the role of ontologies for sharing knowledge among AI
+systems.
+
+2.
+
+Ontologies and knowledge sharing
+
+Knowledgebased systems and services are expensive to build, test, and maintain.
+
+A
+software engineering methodology based on formal specifications of shared resources,
+reusable components, and standard services is needed.
+
+We believe that specifications of
+shared vocabulary can play an important role in such a methodology.
+
+Several technical problems stand in the way of shared, reusable knowledgebased
+software.
+
+Like conventional applications, knowledgebased systems are based on
+heterogeneous hardware platforms, programming languages, and network protocols.
+
+However, knowledgebased systems pose special requirements for interoperability.
+
+Such systems operate on and communicate using statements in a formal knowledge
+
+representation.
+
+They ask queries and give answers.
+
+They take ”background
+knowledge” as an input.
+
+And as agents in a distributed AI environment, they negotiate
+and exchange knowledge.
+
+For such knowledgelevel communication, we need
+conventions at three levels: representation language format, agent communication
+protocol, and specification of the content of shared knowledge.
+
+Proposals for standard
+knowledge representation formats (Fulton, 1992; Genesereth & Fikes, 1992; Morik,
+Causse, & Boswell, 1991; Spiby, 1991) and agent communication languages (Finin et al.,
+1992) are independent of the content of knowledge being exchanged or communicated.
+
+Ontologies can be used for conventions of the third kind: contentspecific specifications
+(Gruber, 1991).
+
+Current research is exploring the use of formal ontologies for specifying content
+specific agreements for a variety of knowledgesharing activities (Allen & Lehrer, 1992;
+Bradshaw, Holm, & Boose, 1992; Cutkosky et al., 1993; Fikes, Cutkosky, Gruber, & van
+Baalen, 1991; Genesereth, 1992; Gruber, Tenenbaum, & Weber, 1992; Neches et al., 1991 ;
+Patil et al., 1992; Walther, Eriksson, & Musen, 1992).
+
+A longterm objective of such
+work is to enable libraries of reusable knowledge components and knowledgebased
+services that can be invoked over networks.
+
+Consider the problem of reusing a knowledgebased planning program.
+
+Such a
+program takes descriptions of objects, events, resources, and constraints, and produces
+plans that assign resources and times to objects and events.
+
+Although it may use
+general planning algorithms, like all knowledgebased systems the planner depends on
+a custom knowledge base (sometimes called a ”domain theory” or ”background
+knowledge”) to get the job done.
+
+The knowledge base may contain some knowledge
+generic to the planning task, and some that describes the domain situations in which the
+planner is to run.
+
+If one wished to use the planning system, one would need to adapt an existing
+knowledge base to a new application domain, or build one from scratch.
+
+This requires,
+at a minimum, a formalism that enables a human user to represent the knowledge so
+that the program can apply it.
+
+Furthermore, the developer needs to know the kinds of
+information given in inputs and returned as outputs, and the kinds of domain
+knowledge that is needed by the planner to perform its task.
+
+If the planning program
+were offered as a service that could be invoked over the network, or if a large planning
+problem were subcontracted out to several cooperating planning agents, then one
+would need an agreement about the topics of conversation that agents are expected to
+understand.
+
+Underlying these contentspecific agreements are ontological commitments:
+agreements about the objects and relations being talked about among agents, at
+software module interfaces, or in knowledge bases.
+
+For instance, developers and users

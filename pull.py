@@ -17,9 +17,9 @@ nlp = StanfordCoreNLP("http://localhost:9000/")
 #sentence = 'Sombut has snoring loudly,he had been sitting in a chair,Sombut has travel on tokyo,he visited the Kiyomizu-dera temple,they go to home after the sunset.'
 #sentence = 'Edwin told Kenny that Dr. Wilson suspected that he cheated on the chemistry exam.'
 #sentence = "harry was snoring loudly. He had been sitting in a chair beside his bedroom window," +  \
-#			"and Ron had finally fallen asleep with one side of his face pressed against the clod windowpane."
-sentence = 'John had just set down the overstuffed sandwich when he spotted a cockroach on the table, sam is running into the room he can not sleep.'
-#sentence = 'Sombut has travel on tokyo,We visited the Kiyomizu-dera temple,they go to home after the sunset,Although Mrs. Smit had a lot monry, She made poor use of it.John had just set down the overstuffed sandwich when he spotted a cockroach on the table, He smashed it with his open palm before he could eat.John had just set down the overstuffed sandwich when he spotted a cockroach on the table, He smashed it with his open palm before he could eat.'
+#			and Ron had finally fallen asleep with one side of his face pressed against the clod windowpane."
+#sentence = 'John had just set down the overstuffed sandwich when he spotted a cockroach on the table, sam is running into the room he can not sleep.'
+sentence = 'John has travel on tokyo,he visited the Kiyomizu-dera temple,he go to home after the sunset.Although Mrs. Smit had a lot monry, She made poor use of it.John had just set down the overstuffed sandwich when he spotted a cockroach on the table, He smashed it with his open palm before he could eat.John had just set down the overstuffed sandwich when he spotted a cockroach on the table, He smashed it with his open palm before he could eat.'
 #print (type(sentence))
 
 
@@ -190,35 +190,29 @@ for indd, val in enumerate(sort_list):
 	indd+=1
 print indd
 
-
-
-
 for i, rel in enumerate(relation):
-	#for ind, val in enumerate(sort_list):
-	#print(rel)
-	print(i)
-	result = db.relation.insert_one(
-	   			{
-	    		"subject" : rel['subject'].lower(),
+	for ind, val in enumerate(sort_list):
+				if i == val:
+					print(i,val)
+
+					result = db.relation.insert_one(
+	   			 	{
+	    			"subject" : rel['subject'].lower(),
 					#"subject": stemmer.stem(rel['subject']),
-	    		"relation" : rel['relation'].lower(),
+	    			"relation" : rel['relation'].lower(),
 					#"relation": stemmer.stem(rel['relation']),
 	    			"object" : rel['object'].lower()
 					#"object": stemmer.stem(rel['object'])
 
 	    			}
 					)
-else:
-
-		print("")
+				else:
+					print("")
 
 
 
 '''
-
-
 for rel in relation:
-
         result = db.relation.insert_one(
 	    {
 	    	"subject" : rel['subject'].lower(),
@@ -227,17 +221,16 @@ for rel in relation:
 			#"relation": stemmer.stem(rel['relation']),
 	    	"object" : rel['object'].lower()
 			#"object": stemmer.stem(rel['object'])
-
 	    }
 	)
 '''
 #sum += 1
 
-#How to receieve value from php or python input browser ?? 
+#How to receieve value from php or python input browser ??
 client = MongoClient()
 db = client.Textmining
 
-#re1 = db.relation.remove( { "subject" : { "$ne": "Mrs. Smit" },{}} )           #use remove not good for this can u try  
+#re1 = db.relation.remove( { "subject" : { "$ne": "Mrs. Smit" },{}} )           #use remove not good for this can u try
 
 #result = db.relation.find({"$or": [{"subject": "Mrs. Smit"}, {"object": "Mrs. Smit"}]}) #use find and "@and" it so well on time in this version
 #print(result)
@@ -340,7 +333,7 @@ for row in db.relation.find({"$or": [{"subject": "john"}]}):    #precision to fi
 		class_r[row['object']] = True
 	id_property = 'property'+str(count)
 	data['property'].append({"id":id_property , "type":"owl:objectProperty"})
-	data['propertyAttribute'].append({	"id": id_property, 
+	data['propertyAttribute'].append({	"id": id_property,
 									  	"domain": row['subject'],
 									  	"range": row['object'],
 									  	"label":{
@@ -354,6 +347,4 @@ for row in db.relation.find({"$or": [{"subject": "john"}]}):    #precision to fi
 							        })
 	count += 1
 with open('result.json', 'w') as fp:
-	json.dump(data, fp)
-
-
+    json.dump(data, fp)

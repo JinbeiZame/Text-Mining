@@ -21,26 +21,14 @@ text_file1.close()
 with open('Output.txt', 'r') as file1:
     with open('Output1.txt', 'r') as file2:
         same = set(file1).intersection(file2)
-        print same
+        #print same
 same.discard('\n')
 
 with open('some_output_file.txt', 'w') as file_out:
     for line in same:
         file_out.write(line)
 
-'''
-with open('Output.txt', 'r') as file1:
-    with open('Output1.txt', 'r') as file2:
-        print file2
-        same = set(file1).intersection(file2)
-        print same
-same.discard('\n')
 
-with open('some_output_file1.txt', 'w') as file_out:
-    for line in same:
-        #print same
-        file_out.write(line)
-'''
 f = open("some_output_file.txt", "r")
 g = open("intersection.txt", "w")
 
@@ -93,4 +81,4 @@ results_integer = list(map(int, [x for x in CNLTLOI if isinstance(x, numbers.Num
 #print results_integer
 
 sort_list = sorted(results_integer, reverse=False)
-print(sort_list)
+print(sort_list)    #array had a duplicated

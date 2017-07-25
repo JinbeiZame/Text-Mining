@@ -1,0 +1,95 @@
+A Translation Approach to
+Portable Ontology Specifications
+
+Thomas R. Gruber
+
+Knowledge System Laboratory
+Stanford University
+701 Welch Road, Building C
+Palo Alto, CA 94304
+gruber@ksl.stanford.edu
+
+Abstract
+
+To support the sharing and reuse of formally represented knowledge among Al systems, it is
+useful to define the common vocabulary in which shared knowledge is represented.
+
+A
+specification of a representational vocabulary for a shared domain of discourse  definitions of
+classes, relations, functions, and other objects  is called an ontology.
+
+This paper describes a
+mechanism for defining ontologies that are portable over representation systems.
+
+Definitions
+written in a standard format for predicate calculus are translated by a system called Ontolingua
+into specialized representations, including framebased systems as well as relational languages.
+
+This allows researchers to share and reuse ontologies, while retaining the computational benefits
+of specialized implementations.
+
+We discuss how the translation approach to portability addresses several technical problems.
+
+One problem is how to accommodate the stylistic and organizational differences among
+representations while preserving declarative content.
+
+Another is how to translate from a very
+expressive language into restricted languages, remaining systemindependent while preserving
+the computational efficiency of implemented systems.
+
+We describe how these problems are
+addressed by basing Ontolingua itself on an ontology of domainindependent, representational
+idioms.
+
+This paper addresses the problem of portability for ontologies.
+
+Portability is a
+problem because the parties to a common ontology may use different representation
+languages and systems.
+
+Ideally, shared terms should be defined at the knowledge level,
+independent of specific representation languages.
+
+Of course, definitions need to be
+couched in some common formalism if they are to be shareable by knowledgebased
+applications.
+
+However, it is not realistic or desirable to require that those applications
+be implemented in a common representation language or system.
+
+This is because
+different applications require different kinds of reasoning services, and specialpurpose
+languages to support them.
+
+Thus, the portability problem for ontologies is to support
+common ontologies over multiple representation systems.
+
+We describe a translation approach to the portability problem for ontologies.
+
+In a
+translation approach, ontologies are specified in a standard, systemindependent form
+and translated into specific representation languages.
+
+In Section 3 we will describe
+Ontolingua, an implemented system for translating ontologies from a declarative,
+predicatecalculus language into a variety of representation systems.
+
+In Section 4 we
+discuss the strengths and limitations of the approach.
+
+But first, we define the notion of
+a shared ontology and describe the role of ontologies for sharing knowledge among AI
+systems.
+
+2.
+
+Ontologies and knowledge sharing
+
+Knowledgebased systems and services are expensive to build, test, and maintain.
+
+A
+software engineering methodology based on formal specifications of shared resources,
+reusable components, and standard services is needed.
+
+
+

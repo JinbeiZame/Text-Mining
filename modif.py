@@ -7,7 +7,7 @@ from pymongo import MongoClient
 #from prettytable import PrettyTable
 from pycorenlp import *
 #import textract
-
+import textract
 #from pymongo import MongoClient
 import json
 
@@ -23,9 +23,10 @@ nlp = StanfordCoreNLP("http://localhost:9000/")
 #sentence =' I love my mom. She took care of me when I was very young. She took care of me when I was sick. She taught me how to read. She taught me how to get dressed. She taught me how to button my shirt. She taught me how to tie my shoes. She taught me how to brush my teeth. She taught me to be kind to others. She taught me to tell the truth. She taught me to be polite. She took me to school on my first day of school. She held my hand. She helped me with my homework. She was nice to all my friends. She always cheered me up. Next year I will graduate from high school. I will go to college. I will do well in college. I will do well after college. My mom has taught me well.'
 #print (type(sentence))
 
+text_file = open("file_extract.txt", "w")
+text_file.write(textract.process("simple1.pdf"))
+text_file.close()
 
-#sentence = textract.process("simple1.pdf")
-#print(text)
 #sentence = 'we have about three hundred registrations for student Sacraments and therefore your co operation in meeting these deadlines is imperative.'
 #sentence = sentence1.replace(u'\xa0', u' ')
 #sentence = sentence1.encode('ascii', 'ignore')
@@ -34,11 +35,11 @@ nlp = StanfordCoreNLP("http://localhost:9000/")
 
 
 
-with open('simple01.txt', 'r') as myfile:
+with open('file_extract.txt', 'r') as myfile:
     sentence=myfile.read().replace('\n', '').replace('\n', '/').replace('\n', '—').replace('\n', '’')
-print type(sentence)
+#print type(sentence)
 sentence = sentence.replace(',', '')
-print sentence
+#print sentence
 
 output = nlp.annotate(sentence,
 			properties={"annotators": "coref",
@@ -457,5 +458,4 @@ for row in db.relation.find({"$or": [{"subject": "he"}]}):    #precision to find
 	count += 1
 with open('result.json', 'w') as fp:
 	json.dump(data, fp)
-
 
