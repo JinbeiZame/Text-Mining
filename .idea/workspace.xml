@@ -4,43 +4,9 @@
     <bookmark url="file://$PROJECT_DIR$/result_json_pos_edit.py" line="15" mnemonic="3" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="263c4b22-e48e-4ae2-a17d-f5d82979b164" name="Default" comment="text -&gt; pos -&gt; openie">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/simple1.pdf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/textextrac" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/codeStyleSettings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/B.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/B.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Output.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Output1.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Result.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/b.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/b2.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/command.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/en_result.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/intersection.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/intersection1.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/output_remove_dot.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/pull.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/pull2.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/relation.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/result1.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/simple.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/simple01.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/simple1.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/simple2.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/some_output_file.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/some_output_file1.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/some_output_file_fixed.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/some_output_file_fixed1.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/store.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testpy.py" />
+    <list default="true" id="263c4b22-e48e-4ae2-a17d-f5d82979b164" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/textextrac" afterPath="$PROJECT_DIR$/textextrac" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/find _location_duplicate_in_list.py" afterPath="$PROJECT_DIR$/find _location_duplicate_in_list.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main_textmining.py" afterPath="$PROJECT_DIR$/main_textmining.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/modif.py" afterPath="$PROJECT_DIR$/modif.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/result.json" afterPath="$PROJECT_DIR$/result.json" />
     </list>
     <list id="ed29da1a-a824-4970-b7fd-58d3ea3edd36" name="Failed commit: Default" comment="samefile 1st">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/export_to_json.py" afterPath="$PROJECT_DIR$/export_to_json.py" />
@@ -491,7 +457,14 @@
       <option name="project" value="LOCAL" />
       <updated>1501003966626</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="text -&gt; pos -&gt; openie">
+      <created>1501005878687</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1501005878687</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -521,7 +494,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="text -&gt; pos -&gt; openie" />
     <MESSAGE value="samefile 1st" />
     <MESSAGE value="result" />
     <MESSAGE value="Full program 1st" />
@@ -542,7 +514,8 @@
     <MESSAGE value="good it worked!" />
     <MESSAGE value="add Read file is good" />
     <MESSAGE value="read file complate and must check symbol and colect sentence format" />
-    <option name="LAST_COMMIT_MESSAGE" value="read file complate and must check symbol and colect sentence format" />
+    <MESSAGE value="text -&gt; pos -&gt; openie" />
+    <option name="LAST_COMMIT_MESSAGE" value="text -&gt; pos -&gt; openie" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -584,6 +557,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
           <caret line="5" column="48" lean-forward="false" selection-start-line="5" selection-start-column="48" selection-end-line="5" selection-end-column="48" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -630,6 +604,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
           <caret line="5" column="48" lean-forward="false" selection-start-line="5" selection-start-column="48" selection-end-line="5" selection-end-column="48" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -654,6 +629,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
           <caret line="5" column="48" lean-forward="false" selection-start-line="5" selection-start-column="48" selection-end-line="5" selection-end-column="48" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -672,6 +648,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
           <caret line="5" column="48" lean-forward="false" selection-start-line="5" selection-start-column="48" selection-end-line="5" selection-end-column="48" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -696,6 +673,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
           <caret line="5" column="48" lean-forward="false" selection-start-line="5" selection-start-column="48" selection-end-line="5" selection-end-column="48" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -720,6 +698,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
           <caret line="5" column="48" lean-forward="false" selection-start-line="5" selection-start-column="48" selection-end-line="5" selection-end-column="48" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -744,6 +723,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
           <caret line="5" column="48" lean-forward="false" selection-start-line="5" selection-start-column="48" selection-end-line="5" selection-end-column="48" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -768,6 +748,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
           <caret line="5" column="48" lean-forward="false" selection-start-line="5" selection-start-column="48" selection-end-line="5" selection-end-column="48" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -792,6 +773,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
           <caret line="5" column="48" lean-forward="false" selection-start-line="5" selection-start-column="48" selection-end-line="5" selection-end-column="48" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -855,6 +837,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
           <caret line="5" column="48" lean-forward="false" selection-start-line="5" selection-start-column="48" selection-end-line="5" selection-end-column="48" />
+          <folding />
         </state>
       </provider>
     </entry>
