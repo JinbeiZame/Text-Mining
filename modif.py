@@ -14,12 +14,12 @@ import json
 nlp = StanfordCoreNLP("http://localhost:9000/")
 #sentence = 'Beam used his former employer as a reference when he applied for his new job.'
 #sentence = 'Kaiser has travel on Hogsmeade Village, He visited the Honeydukes, He go to Hogsmeade Village after the sunset, He had been sitting in a chair,Kaiser has travel on the Honeydukes,We visited Hogsmeade Village.'
-#sentence = 'Sombut has snoring loudly,he had been sitting in a chair,Sombut has travel on tokyo,he visited the Kiyomizu-dera temple,they go to home after the sunset.'
+#sentence = 'John has snoring loudly,he had been sitting in a chair,Sombut has travel on tokyo,he visited the Kiyomizu-dera temple,they go to home after the sunset.'
 #sentence = 'Edwin told Kenny that Dr. Wilson suspected that he cheated on the chemistry exam.'
 #sentence = "harry was snoring loudly. He had been sitting in a chair beside his bedroom window," +  \
 #			"and Ron had finally fallen asleep with one side of his face pressed against the clod windowpane."
-sentence = 'John had just set down the overstuffed sandwich when he spotted a cockroach on the table, sam is running into the room he can not sleep.'
-#sentence = 'Sombut has travel on tokyo,We visited the Kiyomizu-dera temple,they go to home after the sunset,Although Mrs. Smit had a lot monry, She made poor use of it.John had just set down the overstuffed sandwich when he spotted a cockroach on the table, He smashed it with his open palm before he could eat.John had just set down the overstuffed sandwich when he spotted a cockroach on the table, He smashed it with his open palm before he could eat.'
+#sentence = 'John had just set down the overstuffed sandwich when he spotted a cockroach on the table, sam is running into the room he can not sleep.'
+sentence = 'John has travel on tokyo, he visited the Kiyomizu-dera temple,he go to home after the sunset, he had a lot monry, She made poor use of it.John had just set down the overstuffed sandwich when he spotted a cockroach on the table, He smashed it with his open palm before he could eat.John had just set down the overstuffed sandwich when he spotted a cockroach on the table, He smashed it with his open palm before he could eat.'
 #print (type(sentence))
 
 
@@ -107,7 +107,7 @@ text_file1.close()
 with open('Output.txt', 'r') as file1:
     with open('Output1.txt', 'r') as file2:
         same = set(file1).intersection(file2)
-#        print same
+        print same
 same.discard('\n')
 
 with open('some_output_file.txt', 'w') as file_out:
@@ -117,7 +117,7 @@ with open('some_output_file.txt', 'w') as file_out:
 
 f = open("some_output_file.txt", "r")
 g = open("intersection.txt", "w")
-
+#print  g
 for line in f:
 
     if line.strip():
@@ -129,14 +129,14 @@ g.close()
 
 f = open("intersection.txt", "r")
 contents = f.readlines()
-#print contents
+print contents
 f.close()
 
 contents.insert(0, "\n")                                 #Insert \n in first line text file
 
 f = open("intersection1.txt", "w")
 contents = "".join(contents)
-#print contents
+print contents
 f.write(contents)
 f.close()
 
@@ -144,10 +144,10 @@ f.close()
 with open('intersection.txt') as f:
     h = [int(x) for x in next(f).split()]
     array = [[int(x) for x in line.split()] for line in f]
-    #print array
+    print array
 
 list2 = [x for x in array if x]
-#print(list2)
+print(list2)
 
 
 
@@ -162,9 +162,9 @@ def flatten(list2):
 #print(list(flatten(list2)))
 import numbers
 CNLTLOI = list(flatten(list2))
-
+print CNLTLOI
 results_integer = list(map(int, [x for x in CNLTLOI if isinstance(x, numbers.Number)]))
-#print results_integer
+print results_integer
 
 sort_list = sorted(results_integer, reverse=False)
 print(sort_list)    #array had a duplicated
@@ -223,7 +223,7 @@ for i in enumerate(sort_list):
      aa.append(a.pop())
 #print  type(aa)
 store01 =store0
-#print store01
+print store01
 for ii,i in enumerate(sort_list):
     for y , x in enumerate(store01):
         if y == aa[ii]:
@@ -237,7 +237,7 @@ for i in enumerate(sort_list):
      aa1.append(aa.pop())
 #print  type(aa1)
 store001 =store01
-#print store001
+print store001
 for ii,i in enumerate(sort_list):
     for y , x in enumerate(store001):   # round 2
         if y == aa1[ii]:
@@ -256,31 +256,35 @@ for d, fel  in enumerate(sort_list):
 count = 0
 for b, sec in enumerate(store001):
           count+=1
-print count
+hr = count
 #for ii, i in enumerate(store001):
-for j, rel in enumerate(relation):
+for rel in enumerate(relation):
+    print rel
 
-    for b, sec in enumerate(store001):
-        if count <= 3:
-                    if rel['relationSpan'] != ( ii for i in range(len(store001))):
-                        if store001[b] != rel['relationSpan']:
-                            print store001[b]
-                            print rel['relationSpan']
-                            print ('\n')
-                            result = db.relation.insert_one(
-                                {
-                                    "subject": rel['subject'].lower(),
-                                    # "subject": stemmer.stem(rel['subject']),
-                                    "relation": rel['relation'].lower(),
-                                    # "relation": stemmer.stem(rel['relation']),
-                                    "object": rel['object'].lower()
-                                    # "object": stemmer.stem(rel['object'])
 
-                                }
-                            )
-                            count -= 1
-                    else:
-                        print ("Equal")
+    for j, rel in enumerate(relation):
+
+        for b, sec in enumerate(store001):
+            if count > 0:
+                        if rel['relationSpan'] != ( ii for i in range(len(store001))):
+                            if store001[b] == rel['relationSpan']:
+                                print store001[b]
+                                print rel['relationSpan']
+                                print ('\n')
+                                result = db.relation.insert_one(
+                                    {
+                                        "subject": rel['subject'].lower(),
+                                        # "subject": stemmer.stem(rel['subject']),
+                                        "relation": rel['relation'].lower(),
+                                        # "relation": stemmer.stem(rel['relation']),
+                                        "object": rel['object'].lower()
+                                        # "object": stemmer.stem(rel['object'])
+
+                                    }
+                                )
+                                count -= 1
+                        else:
+                            print ("Equal")
 
 
 
